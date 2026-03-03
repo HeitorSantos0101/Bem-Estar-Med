@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bem Estar-Med | Gestão de Artigos Médicos</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <section id="welcomeScreen" class="welcome-screen">
+      <div class="welcome-center">
+        <h1>BEM ESTAR-MED</h1>
+        <p>Sistema Profissional de Gestão de Artigos Médicos</p>
+        <div class="welcome-features">
+          <span>📦 Controle de Estoque</span>
+          <span>🛒 Gestão de Aluguéis</span>
+          <span>💰 Vendas & Recibos</span>
+          <span>📊 Relatórios Inteligentes</span>
+        </div>
+        <button id="openLoginBtn" class="primary-btn">Entrar no Sistema</button>
+      </div>
+    </section>
+
+    <section id="appScreen" class="app-screen hidden">
+      <header class="topbar">
+        <div>
+          <h2>Bem-Estar Med</h2>
+          <p id="sessionInfo">Sessão ativa</p>
+        </div>
+        <button id="logoutBtn" class="danger-btn">Sair</button>
+      </header>
+
+      <main class="container">
+        <nav class="tabs" id="tabs">
+          <button class="tab active" data-tab="estoque">Estoque</button>
+          <button class="tab" data-tab="alugueis">Aluguéis</button>
+          <button class="tab" data-tab="vendas">Vendas</button>
+          <button class="tab" data-tab="relatorios">Relatórios</button>
+        </nav>
+
+        <section class="card stats" id="stats"></section>
+
+        <section id="tab-estoque" class="tab-panel">
+          <article class="card">
+            <h3>Controle de Estoque (1 código = 1 produto)</h3>
+            <form id="productForm" class="form-grid">
+              <input name="name" placeholder="Nome do produto" required />
+              <input name="category" placeholder="Categoria" required />
+              <select name="condition" required>
+                <option value="Novo">Novo</option>
+                <option value="Bom">Bom</option>
+                <option value="Regular">Regular</option>
+                <option value="Manutenção">Manutenção</option>
+              </select>
+              <button type="submit">Adicionar produto</button>
+            </form>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Código</th>
+                    <th>Produto</th>
+                    <th>Estado</th>
+                    <th>Status</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+                <tbody id="productsTable"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <section id="tab-alugueis" class="tab-panel hidden">
+          <article class="card">
+            <div class="card-head">
+              <h3>Gestão de Aluguéis</h3>
+              <div class="month-nav">
+                <button id="rentalPrevMonth" type="button">←</button>
+                <strong id="rentalMonthLabel"></strong>
+                <button id="rentalNextMonth" type="button">→</button>
+              </div>
+            </div>
+            <form id="rentalForm" class="form-grid">
+              <input name="name" placeholder="Nome" required />
+              <input name="phone" placeholder="Telefone" required />
+              <input name="address" placeholder="Endereço" required />
+              <input name="document" placeholder="CPF/RG" required />
+              <input name="cnpj" placeholder="CNPJ (opcional)" />
+              <select name="productId" required></select>
+              <input name="dailyPrice" type="number" min="0" step="0.01" placeholder="Preço da diária (R$)" required />
+              <input name="total" type="number" min="0" step="0.01" placeholder="Total (R$)" required />
+              <input name="startDate" type="date" required />
+              <input name="endDate" type="date" required />
+              <button type="submit">Registrar aluguel</button>
+            </form>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Cliente</th>
+                    <th>Produto</th>
+                    <th>Início</th>
+                    <th>Final</th>
+                    <th>Status</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+                <tbody id="rentalsTable"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <section id="tab-vendas" class="tab-panel hidden">
+          <article class="card">
+            <div class="card-head">
+              <h3>Vendas & Recibos</h3>
+              <div class="month-nav">
+                <button id="salePrevMonth" type="button">←</button>
+                <strong id="saleMonthLabel"></strong>
+                <button id="saleNextMonth" type="button">→</button>
+              </div>
+            </div>
+            <form id="saleForm" class="form-grid">
+              <input name="buyer" placeholder="Nome do comprador" required />
+              <select name="productId" required></select>
+              <input name="unitPrice" type="number" min="0" step="0.01" placeholder="Preço (R$)" required />
+              <button type="submit">Registrar venda</button>
+            </form>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Comprador</th>
+                    <th>Produto</th>
+                    <th>Total</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+                <tbody id="salesTable"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <section id="tab-relatorios" class="tab-panel hidden">
+          <article class="card">
+            <div class="card-head">
+              <h3>Relatórios de Vendas e Aluguéis</h3>
+              <div class="month-nav">
+                <button id="reportPrevMonth" type="button">←</button>
+                <strong id="reportMonthLabel"></strong>
+                <button id="reportNextMonth" type="button">→</button>
+              </div>
+            </div>
+            <div class="report-cards" id="reportCards"></div>
+            <div class="actions-row">
+              <button id="exportRentalsCsv" type="button">Exportar Aluguéis (CSV)</button>
+              <button id="exportSalesCsv" type="button">Exportar Vendas (CSV)</button>
+              <button id="exportPdf" type="button">Exportar PDF</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Mês</th>
+                    <th>Qtd. Aluguéis</th>
+                    <th>Total Aluguéis</th>
+                    <th>Qtd. Vendas</th>
+                    <th>Total Vendas</th>
+                  </tr>
+                </thead>
+                <tbody id="reportTable"></tbody>
+              </table>
+            </div>
+            <ul id="alertsList" class="alerts"></ul>
+          </article>
+        </section>
+      </main>
+    </section>
+
+    <div id="loginModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-backdrop" data-close-login="true"></div>
+      <div class="modal-content" role="dialog" aria-modal="true">
+        <div class="modal-header">
+          <h3>Entrar no sistema</h3>
+          <button id="closeLoginBtn" type="button">Fechar</button>
+        </div>
+        <form id="loginForm" class="form-grid">
+          <input name="username" placeholder="Usuário" required />
+          <input name="password" type="password" placeholder="Senha" required />
+          <select name="role" required>
+            <option value="admin">Admin</option>
+            <option value="funcionario">Funcionário</option>
+          </select>
+          <button type="submit">Entrar</button>
+        </form>
+        <small class="help">Demo: admin/admin123 ou funcionario/func123</small>
+      </div>
+    </div>
+
+    <div id="clientModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-backdrop" data-close-modal="true"></div>
+      <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="clientModalTitle">
+        <div class="modal-header">
+          <h3 id="clientModalTitle">Detalhes do cliente</h3>
+          <button id="closeModalBtn" type="button">Fechar</button>
+        </div>
+        <div id="modalBody" class="modal-body"></div>
+      </div>
+    </div>
+
+    <div id="productModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-backdrop" data-close-product="true"></div>
+      <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
+        <div class="modal-header">
+          <h3 id="productModalTitle">Detalhes do produto</h3>
+          <button id="closeProductModalBtn" type="button">Fechar</button>
+        </div>
+        <div id="productModalBody" class="modal-body"></div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

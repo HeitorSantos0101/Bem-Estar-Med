@@ -17,7 +17,7 @@
           <span>💰 Vendas & Recibos</span>
           <span>📊 Relatórios Inteligentes</span>
         </div>
-        <button id="openLoginBtn" class="primary-btn">Entrar no Sistema</button>
+        <button id="openAuthBtn" class="primary-btn">Entrar no Sistema</button>
       </div>
     </section>
 
@@ -36,13 +36,14 @@
           <button class="tab" data-tab="alugueis">Aluguéis</button>
           <button class="tab" data-tab="vendas">Vendas</button>
           <button class="tab" data-tab="relatorios">Relatórios</button>
+          <button class="tab" data-tab="usuarios">Usuários</button>
         </nav>
 
         <section class="card stats" id="stats"></section>
 
         <section id="tab-estoque" class="tab-panel">
           <article class="card">
-            <h3>Controle de Estoque (1 código = 1 produto)</h3>
+            <h3>Controle de Estoque (1 código = 1 item)</h3>
             <form id="productForm" class="form-grid">
               <input name="name" placeholder="Nome do produto" required />
               <input name="category" placeholder="Categoria" required />
@@ -178,17 +179,61 @@
             <ul id="alertsList" class="alerts"></ul>
           </article>
         </section>
+
+        <section id="tab-usuarios" class="tab-panel hidden">
+          <article class="card">
+            <h3>Gestão de Usuários</h3>
+            <p class="muted">Apenas admin pode criar usuários e alterar senhas.</p>
+
+            <div id="usersAdminPanel">
+              <form id="createUserForm" class="form-grid">
+                <input name="username" placeholder="Novo usuário" required />
+                <input name="password" type="password" placeholder="Senha" required />
+                <select name="role" required>
+                  <option value="funcionario">Funcionário</option>
+                </select>
+                <button type="submit">Criar usuário</button>
+              </form>
+
+              <form id="changePasswordForm" class="form-grid">
+                <select name="targetUser" required></select>
+                <input name="newPassword" type="password" placeholder="Nova senha" required />
+                <button type="submit">Alterar senha</button>
+              </form>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Usuário</th>
+                    <th>Perfil</th>
+                    <th>Criado em</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTable"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
       </main>
     </section>
 
-    <div id="loginModal" class="modal hidden" aria-hidden="true">
-      <div class="modal-backdrop" data-close-login="true"></div>
+    <div id="authModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-backdrop" data-close-auth="true"></div>
       <div class="modal-content" role="dialog" aria-modal="true">
         <div class="modal-header">
-          <h3>Entrar no sistema</h3>
-          <button id="closeLoginBtn" type="button">Fechar</button>
+          <h3 id="authTitle">Entrar no sistema</h3>
+          <button id="closeAuthBtn" type="button">Fechar</button>
         </div>
-        <form id="loginForm" class="form-grid">
+
+        <form id="setupForm" class="form-grid hidden">
+          <input name="adminUsername" placeholder="Nome do admin" required />
+          <input name="adminPassword" type="password" placeholder="Senha do admin" required />
+          <button type="submit">Criar admin inicial</button>
+        </form>
+
+        <form id="loginForm" class="form-grid hidden">
           <input name="username" placeholder="Usuário" required />
           <input name="password" type="password" placeholder="Senha" required />
           <select name="role" required>
@@ -197,16 +242,15 @@
           </select>
           <button type="submit">Entrar</button>
         </form>
-        <small class="help">Demo: admin/admin123 ou funcionario/func123</small>
       </div>
     </div>
 
     <div id="clientModal" class="modal hidden" aria-hidden="true">
-      <div class="modal-backdrop" data-close-modal="true"></div>
+      <div class="modal-backdrop" data-close-client="true"></div>
       <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="clientModalTitle">
         <div class="modal-header">
           <h3 id="clientModalTitle">Detalhes do cliente</h3>
-          <button id="closeModalBtn" type="button">Fechar</button>
+          <button id="closeClientModalBtn" type="button">Fechar</button>
         </div>
         <div id="modalBody" class="modal-body"></div>
       </div>

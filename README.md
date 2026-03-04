@@ -2,28 +2,36 @@
 
 Aplicação web em HTML, CSS e JavaScript puro para loja de artigos médicos/hospitalares.
 
+## Fluxo de usuários (novo)
+
+- Primeiro acesso:
+  - o sistema pede criação do usuário **admin** (nome + senha).
+- Próximos acessos:
+  - login com **nome**, **senha** e **perfil** (admin/funcionário).
+- Regras:
+  - só existe **1 admin** inicial;
+  - admin pode criar outros usuários apenas como **funcionário**;
+  - admin pode **alterar senha** de qualquer usuário;
+  - funcionário **não pode excluir** produtos.
+
 ## Funcionalidades implementadas
 
-- Login por perfil:
-  - admin (`admin/admin123`)
-  - funcionário (`funcionario/func123`)
 - Abas horizontais:
   - Estoque
   - Aluguéis
   - Vendas
   - Relatórios
+  - Usuários
 - Cada produto é único:
   - 1 código = 1 item
   - sem campo de quantidade
-  - status do item: Disponível / Alugado / Vendido
-- Aluguéis com:
+  - status: Disponível / Alugado / Vendido
+- Aluguéis:
   - campo CNPJ opcional
-  - renovação de aluguel
-  - edição de aluguel
-  - devolução
-- Vendas com:
+  - renovação, edição e devolução
+- Vendas:
   - edição de venda
-- Relatórios com:
+- Relatórios:
   - setas para trocar mês
   - resumo mensal de vendas e aluguéis
   - exportação CSV/PDF
